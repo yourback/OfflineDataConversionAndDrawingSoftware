@@ -31,6 +31,9 @@ class DataCleaner(object):
         self.data_R = []
         self.data_S = []
 
+        # 读文件
+        self.read_data()
+
     def single_line_cleaning(self, one_line):
         end = one_line.index(" 0D 0A")
         start = 1
@@ -46,7 +49,7 @@ class DataCleaner(object):
         :param i:
         :return:
         """
-        return (int(data[i], 16) << 8 + int(data[i + 1], 16)) / 100
+        return ((int(data[i], 16) << 8) + int(data[i + 1], 16)) / 100
 
     def get_item_single_data(self, data, i):
         """
@@ -101,12 +104,10 @@ class DataCleaner(object):
             self.data_R.append(cleaned_data[12])
             self.data_S.append(cleaned_data[13])
 
-            self.data_LU_LD.append(cleaned_data[1] - cleaned_data[0])
-            self.data_RD_RU.append(cleaned_data[2] - cleaned_data[3])
+            self.data_LU_LD.append(round(cleaned_data[1] - cleaned_data[0], 2))
+            self.data_RD_RU.append(round(cleaned_data[2] - cleaned_data[3], 2))
 
     def get_chart_data(self, chart_num):
-        # 读文件
-        self.read_data()
 
         # print("data_LD:%s" % self.data_LD)
         # print("data_LU:%s" % self.data_LU)

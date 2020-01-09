@@ -7,6 +7,7 @@ def get_source_data():
 
 def file_read_lines():
     with open('../temp_data.txt', 'r+') as f:
+        # with open('../data.txt', 'r+') as f:
         lines = f.readlines()
 
     for single_line in lines:

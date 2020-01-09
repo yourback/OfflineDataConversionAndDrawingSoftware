@@ -25,12 +25,12 @@ if __name__ == '__main__':
     start = 1
     line_result = one_line[start:end]
     item_data_list = line_result.split(" ")
-    print(item_data_list)
+    # print(item_data_list)
     data_LD, data_LU, data_RD, data_RU, data_K_R, data_K_L = get_datas(item_data_list)
 
-    print("data_LD: %s" % data_LD)
-    print("data_LU: %s" % data_LU)
-    print("data_RD: %s" % data_RD)
-    print("data_RU: %s" % data_RU)
-    print("data_K_R: %s" % data_K_R)
-    print("data_K_L: %s" % data_K_L)
+    # print("data_LD: %s" % data_LD)
+    # print("data_LU: %s" % data_LU)
+    # print("data_RD: %s" % data_RD)
+    # print("data_RU: %s" % data_RU)
+    # print("data_K_R: %s" % data_K_R)
+    # print("data_K_L: %s" % data_K_L)
