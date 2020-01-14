@@ -31,9 +31,8 @@ class Chart(PlotWidget):
 
     def start_move(self):
         # 发送两个信号
-        # self.single_line_moved()
-        # self.range_line_moved()
-        self.single_line.setValue(1)
+        self.single_line_moved()
+        # self.single_line.setValue(1)
         self.range_line.setRegion((10, 20))
 
     def init_ui(self):

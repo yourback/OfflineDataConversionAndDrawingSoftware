@@ -2,8 +2,8 @@ import sys
 
 import serial.tools.list_ports
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot, QDir
+from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog
 
 from show_module.chart_view_manager import ChartView
 from show_module.main_view import Ui_MainWindow
@@ -143,6 +143,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_port_settings_layout_status(True)
             self.set_send_layout_status(False)
 
+    @pyqtSlot()
+    def on_btn_selected_file_clicked(self):
+        txt_file_path, _ = QFileDialog.getOpenFileName(parent=self, caption='打开文件', directory='.',
+                                                       filter='文本文件( *.TXT *.txt)')
+        # print(txt_file_path)
+        self.et_file_path.setText(txt_file_path)
+
     def set_port_settings_layout_status(self, status):
         """
         设置串口区域状态
@@ -162,8 +169,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :param status:
         :return:
         """
-        self.et_send_msg.setEnabled(status)
+        self.et_send_rate.setEnabled(status)
         self.btn_send.setEnabled(status)
+        self.btn_selected_file.setEnabled(status)
+        self.et_file_path.setEnabled(status)
 
     def cbb_port_init(self):
         '''
