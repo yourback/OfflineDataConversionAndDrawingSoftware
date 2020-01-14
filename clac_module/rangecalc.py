@@ -34,4 +34,18 @@ def get_range_values(base_data):
         "min": min_calc(base_data),
         "diff": max_min(base_data),
         "average": average_calc(base_data),
+        "integral": integral_range_values(base_data),
     }
+
+
+def integral_range_values(list_data):
+    result = 0
+    for index, data in enumerate(list_data):
+        # 如果是第一项不做处理
+        if index == 0:
+            continue
+        else:
+            # 如果不是第一项，则这个小面积为 (data - list_data[index-1]) /2
+            result += (data + list_data[index - 1]) / 2
+            # print('结果：%s' % )
+    return round(result, 3)

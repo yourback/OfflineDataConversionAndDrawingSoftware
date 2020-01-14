@@ -14,7 +14,6 @@ class ChartView(QtWidgets.QWidget):
         self.setWindowTitle(title)
         # 子窗口在最上面
         self.setWindowModality(Qt.ApplicationModal)
-
         # 新建竖向布局
         self.main_layout = QVBoxLayout(self)
         # 设置布局
@@ -30,3 +29,4 @@ class ChartView(QtWidgets.QWidget):
             ipv = ItemChartView(chart_num, data)
             self.main_layout.addWidget(ipv)
         self.setLayout(self.main_layout)
+        self.showMaximized()

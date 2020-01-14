@@ -21,10 +21,20 @@ class Chart(PlotWidget):
         self.chart_type = chart_num
         # 数据
         self.chart_data = data
+        # print("数据格式：%s" % data)
         self.single_line = pg.InfiniteLine(angle=90, movable=True)
+        # 如果是微分图像 则不显示区间线
         self.range_line = pg.LinearRegionItem([10, 30], movable=True)
         self.setTitle("图%s" % chart_num)
         self.init_ui()
+        self.start_move()
+
+    def start_move(self):
+        # 发送两个信号
+        # self.single_line_moved()
+        # self.range_line_moved()
+        self.single_line.setValue(1)
+        self.range_line.setRegion((10, 20))
 
     def init_ui(self):
         # 坐标轴信息设置
@@ -36,11 +46,11 @@ class Chart(PlotWidget):
         self.addItem(self.single_line)
         # 竖线移动监听
         self.single_line.sigPositionChangeFinished.connect(self.single_line_moved)
-
-        # 加区间
-        self.addItem(self.range_line)
-        # 区间的监听
-        self.range_line.sigRegionChangeFinished.connect(self.range_line_moved)
+        if '-' not in self.chart_type:
+            # 加区间
+            self.addItem(self.range_line)
+            # 区间的监听
+            self.range_line.sigRegionChangeFinished.connect(self.range_line_moved)
 
         # 循环画线
         for index, data_item in enumerate(self.chart_data):
@@ -59,6 +69,8 @@ class Chart(PlotWidget):
         self.single_line.setValue(index)
         line_key_value = {}
         for key in self.chart_data:
+            if index > len(self.chart_data[key]):
+                index = len(self.chart_data[key]) - 1
             line_key_value[key] = self.chart_data[key][index]
 
         emit_data = self.chart_type, index, line_key_value
@@ -66,7 +78,7 @@ class Chart(PlotWidget):
 
     # 区间改变完成
     def range_line_moved(self):
-        # print('区间重新移动')
+        print('区间重新移动')
         region = self.range_line.getRegion()
         # print('最小:%s   %s' % (region[0], round(region[0])))
         # print('最大:%s   %s' % (region[1], round(region[1])))
@@ -78,13 +90,15 @@ class Chart(PlotWidget):
         # print('最大值：%s' % max_index)
         # 处理完的数据集合
         cleaned_chart_data = {}
+        # 区间内数据
+        data_in_range = {}
         for key in self.chart_data:
             if key in need_range_data_list:
                 # print('key:%s  value:%s' % (key, self.chart_data))
-
                 # 数据基础
                 base_data = self.chart_data[key][min_index:max_index + 1]
-                # print('base_data: %s' % base_data)
+                # 区间内数据
+                data_in_range[key] = base_data
                 if not base_data:
                     # print('为空')
                     return
@@ -94,4 +108,4 @@ class Chart(PlotWidget):
                 cleaned_chart_data[key] = range_values
         # 发送信号
         # print(cleaned_chart_data)
-        self.lines_range_info_signal.emit((min_index, max_index, cleaned_chart_data))
+        self.lines_range_info_signal.emit((min_index, max_index, cleaned_chart_data, data_in_range))
